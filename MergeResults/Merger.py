@@ -22,10 +22,11 @@ img = Image.open(image_input)
 
 xticks = []
 yticks = []
+min_confidence = 0.8
 for row in YoloData:
-    if row[1] < 0.8:
+    if row[1] < min_confidence:
         print(
-            f"Point skipped. Category {row[0]} Confidence {row[1]} Coordinates {row[2:3]}"
+            f"Point skipped with confidence {row[1]}< Min conficence:{min_confidence}. Category {row[0]}  Coordinates {row[2:3]}"
         )
     if row[0] == 0:
         xticks.append(row[2], row[3])
