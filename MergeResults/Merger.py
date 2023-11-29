@@ -102,13 +102,12 @@ axis_intersection = find_intersection_point(
     y_ticks_coords[-1, :],
 )
 
-# We compute the position of the scatterpoints with respect to the axiss intersextion
+# We compute the position of the scatterpoints with respect to the axis intersection
 xy_on_axes = xy_coords - axis_intersection
 
-# We compute the vectors of the axis. Ideally they should be ortonormal and only have one non-zero component
+# We compute the vectors of the axis. Ideally they should be orthonormal and only have one non-zero component
 x_vector = x_ticks_coords[-1, :] - x_ticks_coords[0, :]
 y_vector = y_ticks_coords[-1, :] - y_ticks_coords[0, :]
-
 
 # We compute the rotation matrix to correct for misalignments and shears
 transformation_matrix = np.vstack(
@@ -122,15 +121,15 @@ xy_transformed = np.matmul(xy_on_axes, transformation_matrix)
 xy_data = np.zeros(xy_transformed.shape)
 
 xy_data[:, 0] = (
-    xy_transformed[:, 0]
+    (xy_transformed[:, 0] - x_ticks_coords[0, 0] + axis_intersection[0])
     * (x_tick_values[-1] - x_tick_values[0])
     / np.linalg.norm(x_vector)
-)
+) + x_tick_values[0]
 xy_data[:, 1] = (
-    xy_transformed[:, 1]
+    (xy_transformed[:, 1] - y_ticks_coords[0, 1] + axis_intersection[1])
     * (y_tick_values[-1] - y_tick_values[0])
     / np.linalg.norm(y_vector)
-)
+) + y_tick_values[0]
 
 
 fig, (ax1, ax2) = plt.subplots(1, 2, dpi=100, gridspec_kw={"width_ratios": [1, 1]})
@@ -142,23 +141,3 @@ ax2.set_xlabel(x_label)
 ax2.set_ylabel(y_label)
 ax2.set_title(title)
 plt.show()
-
-# x_scale = (x_tick_values[-1] - x_tick_values[0]) / np.linalg.norm(x_axis)
-# y_scale = (x_tick_values[-1] - x_tick_values[0]) / np.linalg.norm(x_axis)
-
-
-# min_confidence = 0.8
-# x_tick_coords = np.zeros((0, 2))
-# y_tick_coords = np.zeros((0, 2))
-# for row in yolo_output:
-#     if row[1] < min_confidence:
-#         print(
-#             f"Point skipped with confidence {row[1]}< Min conficence:{min_confidence}. Category {row[0]}  Coordinates {row[2:3]}"
-#         )
-#     else:
-#         if row[0] == 0:
-#             x_tick_coords = np.vstack((x_tick_coords, np.array(row[2:4])))
-#         elif row[0] == 1:
-#             y_tick_coords = np.vstack((y_tick_coords, np.array(row[2:4])))
-#         else:
-#             breakpoint()
