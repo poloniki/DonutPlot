@@ -106,27 +106,31 @@ axis_intersection = find_intersection_point(
 xy_on_axes = xy_coords - axis_intersection
 
 # We compute the vectors of the axis. Ideally they should be ortonormal and only have one non-zero component
-x_vector = x_ticks_coords[-1, :] - axis_intersection  # x_ticks_coords[0, :]
-y_vector = y_ticks_coords[-1, :] - axis_intersection  # y_ticks_coords[0, :]
-breakpoint()
+x_vector = x_ticks_coords[-1, :] - x_ticks_coords[0, :]
+y_vector = y_ticks_coords[-1, :] - y_ticks_coords[0, :]
+
 
 # We compute the rotation matrix to correct for misalignments and shears
 transformation_matrix = np.vstack(
     (x_vector / np.linalg.norm(x_vector), y_vector / np.linalg.norm(y_vector))
 )
-breakpoint()
+
 # We transform the data so the result is ortonormal
 xy_transformed = np.matmul(xy_on_axes, transformation_matrix)
-axis_int_transformed = np.matmul(axis_intersection, transformation_matrix)
+
 # We move the transformed dots to the data units space
 xy_data = np.zeros(xy_transformed.shape)
 
-xy_data[:, 0] = (xy_transformed[:, 0] + axis_int_transformed[0]) * (
-    x_tick_values[-1] - x_tick_values[0]
-)  # + x_tick_values[0]
-xy_data[:, 1] = (xy_transformed[:, 1] + axis_int_transformed[1]) * (
-    y_tick_values[-1] - y_tick_values[0]
-)  # + y_tick_values[0]
+xy_data[:, 0] = (
+    xy_transformed[:, 0]
+    * (x_tick_values[-1] - x_tick_values[0])
+    / np.linalg.norm(x_vector)
+)
+xy_data[:, 1] = (
+    xy_transformed[:, 1]
+    * (y_tick_values[-1] - y_tick_values[0])
+    / np.linalg.norm(y_vector)
+)
 
 
 fig, (ax1, ax2) = plt.subplots(1, 2, dpi=100, gridspec_kw={"width_ratios": [1, 1]})
