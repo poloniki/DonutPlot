@@ -8,7 +8,7 @@ import json
 
 
 ##### Define constants #####
-train_size = 20
+train_size = 10
 val_split = 0.125
 test_split = 0.125
 
