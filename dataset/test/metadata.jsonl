@@ -1,1 +1,1 @@
-{"file_name": "0000.jpg", "ground_truth": "{\"gt_parse\": {\"title\": \"Curious Joy\", \"x_label\": \"Volume [m^3]\", \"x_ticks\": [-50.0, 0.0, 50.0, 100.0, 150.0, 200.0], \"y_label\": \"Area [m^2]\", \"y_ticks\": [0.0, 200.0, 400.0, 600.0, 800.0]}}"}
+{"file_name": "0000.jpg", "ground_truth": "{\"gt_parse\": {\"title\": \"Vibrant Cityscape\", \"x_label\": \"Length [nm]\", \"x_ticks\": [0.0, 200.0, 400.0, 600.0], \"y_label\": \"Frequency [Hz]\", \"y_ticks\": [0.0, 100.0, 200.0, 300.0]}}"}
